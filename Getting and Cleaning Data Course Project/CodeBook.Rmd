@@ -1,0 +1,169 @@
+---
+title: "CodeBook"
+author: "Julian Posada"
+date: "2023-02-13"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+### This is de CodeBook for the final project: Peer-graded Assignment: Getting and Cleaning Data Course Project
+### Johns Hopkins Data Science Specialization via Coursera 
+
+One of the most exciting areas in all of data science right now is wearable computing.
+Companies like Fitbit, Nike, and Jawbone Up are racing to develop the most advanced algorithms to attract new users. 
+The data linked to from the course website represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained:
+
+[archive.ics.uci.edu](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
+
+**Here are the data for the project:**
+
+ [cloudfront.net](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip )
+
+You should create one R script called run_analysis.R that does the following. 
+
+Merges the training and the test sets to create one data set.
+
+Extracts only the measurements on the mean and standard deviation for each measurement. 
+
+Uses descriptive activity names to name the activities in the data set
+
+Appropriately labels the data set with descriptive variable names. 
+
+From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+
+
+# My project: 
+
+the explanation of the variables can be found at [codebook.docx](https://github.com/JulianPosadaDenHaag/Johns_Hopkins_Coursera_Data_Science/blob/7ef7711c0324055b5f5cc74f574139d42736d12d/Getting%20and%20Cleaning%20Data%20Course%20Project/codebook.docx)
+
+or at the end of this document with a skimr summary
+
+First I will load the packages I need to perform the getting and cleaning process
+
+
+```{r message=FALSE, warning=FALSE}
+library(here)
+library(tidyverse)
+library(readr)
+library(skimr)
+library(data.table)
+library(stringr)
+```
+
+Using the library here, I am setting up the correct path
+```{r}
+path<-     here::here( "Getting and Cleaning Data course Project","UCI HAR Dataset")
+```
+
+The next code  takes the features names from "features.txt"
+
+```{r}
+features<-data.table::fread(here::here(path,"features.txt"))%>% 
+  set_names(c("index", "names")) 
+str(features)
+```
+
+this select only the "names" in "features.txt" that contains mean or std
+```{r}
+mean_std<- features %>% filter( grepl("mean|std",features$names))
+str(mean_std)
+```
+
+Loading the x_train.txt (training data set) into a data.table, and setting the names of all columns to be the right
+names (in features). Then only selecting the names that contains mean or std 
+
+```{r}
+x_train<- data.table::fread(here::here(path, "train", "x_train.txt"))%>%
+  setNames(features$names) %>% select(mean_std$names)
+head(as.tibble(x_train))
+```
+
+
+A data.table is created with the values to be transformed into activity_labels
+
+```{r}
+y_train<-  data.table::fread(here::here(path, "train","y_train.txt")) %>% 
+        set_names("labels")
+str(y_train)
+```
+
+
+A data.table is created that contains all te subjects (as character).  An index is created. 
+```{r}
+subject_train<-  data.table::fread(here::here(path, "train","subject_train.txt"),
+                                   colClasses = "character") %>%
+        set_names("subject")%>% 
+        mutate("index" =row_number())
+str(subject_train)
+```
+
+
+
+The data from y_train, subject_train and activity labels is then merged. 
+```{r}
+activity_labelsX<-data.table::fread(here::here(path,"activity_labels.txt"))%>% 
+         set_names(c("labels", "activity_labels")) %>% 
+        merge(y_train, by = "labels") %>% mutate("index" =row_number()) %>% 
+        merge(subject_train, by = "index") %>% select(!index & !labels)
+str(activity_labelsX)
+```
+
+All the columns are merged to created the tidy x_train dataset. 
+```{r}
+x_train<-bind_cols(activity_labelsX,x_train)
+head(as.tibble(x_train))
+```
+
+
+The same process is repeated for the test dataset
+```{r}
+x_test<- data.table::fread(here::here(path, "test", "X_test.txt"))%>%
+        setNames(features$names)%>% select(mean_std$names)
+
+y_test<-  data.table::fread(here::here(path, "test", "y_test.txt")) %>% 
+        set_names("labels")
+
+subject_train_y<-  data.table::fread(here::here(path, "test","subject_test.txt"),colClasses = "character") %>%
+        set_names("subject")%>% 
+        mutate("index" =row_number())
+
+activity_labelsY<-data.table::fread(here::here(path, "activity_labels.txt"))%>% 
+        set_names(c("labels", "activity_labels")) %>% 
+        merge(y_test, by = "labels") %>% mutate("index" =row_number()) %>% 
+        merge(subject_train_y, by = "index")%>% select(!index & !labels)
+
+x_test<-bind_cols(activity_labelsY,x_test) 
+head(as.tibble(x_test))
+```
+
+
+
+Binding all the rows to create a tidy_dataset.  The subject is set to the first column
+```{r}
+tidy_data<- bind_rows(x_train,x_test) %>% 
+        relocate(subject)
+head(as.tibble(tidy_data))
+```
+
+The tidy data is then grouped and summarized by average 
+
+```{r}
+tidy_data_average<- tidy_data %>% 
+  group_by( subject, activity_labels) %>% 
+  summarise(across(everything(), mean), .groups = "drop") %>% 
+  arrange(activity_labels) 
+tidy_data_average
+skim(tidy_data_average)
+
+```
+
+
+
+
+

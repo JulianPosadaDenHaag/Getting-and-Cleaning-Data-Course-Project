@@ -27,7 +27,7 @@ y_train<-  data.table::fread(here::here(path, "train","y_train.txt")) %>%
         set_names("labels")
 
 #a data.table is created that contains all te subjects.  An index is created. 
-subject_train<-  data.table::fread(here::here(path, "train","subject_train.txt")) %>%
+subject_train<-  data.table::fread(here::here(path, "train","subject_train.txt"),colClasses = "character") %>%
         set_names("subject")%>% 
         mutate("index" =row_number())
 
@@ -50,7 +50,7 @@ y_test<-  data.table::fread(here::here(path, "test", "y_test.txt")) %>%
         set_names("labels")
 
 #a data.table is created that contains all te subjects.  An index is created. 
-subject_train_y<-  data.table::fread(here::here(path, "test","subject_test.txt")) %>%
+subject_train_y<-  data.table::fread(here::here(path, "test","subject_test.txt"),colClasses = "character") %>%
         set_names("subject")%>% 
         mutate("index" =row_number())
 
@@ -71,7 +71,7 @@ tidy_data<- bind_rows(x_train,x_test) %>%
 tidy_data_average<- tidy_data %>% 
   group_by( subject, activity_labels) %>% 
   summarise(across(everything(), mean), .groups = "drop") %>% 
-  arrange(subject,activity_labels) 
+  arrange(activity_labels) 
 
 
 write.table(tidy_data_average,
