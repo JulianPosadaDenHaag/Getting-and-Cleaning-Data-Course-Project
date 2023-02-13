@@ -3,7 +3,7 @@ title: "CodeBook"
 author: "Julian Posada"
 date: "2023-02-13"
 output:
-  html_document: default
+  md_document: default
 ---
 
 ```{r setup, include=FALSE}

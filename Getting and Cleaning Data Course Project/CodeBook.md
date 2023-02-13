@@ -117,7 +117,8 @@ activity\_labels
 A data.table is created that contains all te subjects (as character). An
 index is created.
 
-    subject_train<-  data.table::fread(here::here(path, "train","subject_train.txt"),colClasses = "character") %>%
+    subject_train<-  data.table::fread(here::here(path, "train","subject_train.txt"),
+                                       colClasses = "character") %>%
             set_names("subject")%>% 
             mutate("index" =row_number())
     str(subject_train)
@@ -254,187 +255,1159 @@ The tidy data is then grouped and summarized by average
     ## #   `tBodyAccJerk-std()-Y` <dbl>, `tBodyAccJerk-std()-Z` <dbl>,
     ## #   `tBodyGyro-mean()-X` <dbl>, `tBodyGyro-mean()-Y` <dbl>, …
 
-    summary(tidy_data_average)
+    skim(tidy_data_average)
 
-    ##    subject          activity_labels    tBodyAcc-mean()-X tBodyAcc-mean()-Y 
-    ##  Length:40          Length:40          Min.   :0.2657    Min.   :-0.02095  
-    ##  Class :character   Class :character   1st Qu.:0.2706    1st Qu.:-0.01856  
-    ##  Mode  :character   Mode  :character   Median :0.2755    Median :-0.01766  
-    ##                                        Mean   :0.2744    Mean   :-0.01746  
-    ##                                        3rd Qu.:0.2776    3rd Qu.:-0.01645  
-    ##                                        Max.   :0.2802    Max.   :-0.01335  
-    ##  tBodyAcc-mean()-Z tBodyAcc-std()-X  tBodyAcc-std()-Y  tBodyAcc-std()-Z  
-    ##  Min.   :-0.1183   Min.   :-0.9924   Min.   :-0.9722   Min.   :-0.97635  
-    ##  1st Qu.:-0.1100   1st Qu.:-0.6680   1st Qu.:-0.5905   1st Qu.:-0.70516  
-    ##  Median :-0.1087   Median :-0.6192   Median :-0.5317   Median :-0.64677  
-    ##  Mean   :-0.1088   Mean   :-0.6281   Mean   :-0.5311   Mean   :-0.64518  
-    ##  3rd Qu.:-0.1067   3rd Qu.:-0.5545   3rd Qu.:-0.4224   3rd Qu.:-0.57841  
-    ##  Max.   :-0.0996   Max.   :-0.1270   Max.   : 0.1215   Max.   :-0.08298  
-    ##  tGravityAcc-mean()-X tGravityAcc-mean()-Y tGravityAcc-mean()-Z
-    ##  Min.   :0.4753       Min.   :-0.180019    Min.   :-0.28488    
-    ##  1st Qu.:0.6471       1st Qu.:-0.062547    1st Qu.: 0.03948    
-    ##  Median :0.6738       Median : 0.019050    Median : 0.09160    
-    ##  Mean   :0.6790       Mean   : 0.004372    Mean   : 0.08625    
-    ##  3rd Qu.:0.7026       3rd Qu.: 0.067378    3rd Qu.: 0.14281    
-    ##  Max.   :0.9626       Max.   : 0.281472    Max.   : 0.23923    
-    ##  tGravityAcc-std()-X tGravityAcc-std()-Y tGravityAcc-std()-Z
-    ##  Min.   :-0.9957     Min.   :-0.9825     Min.   :-0.9738    
-    ##  1st Qu.:-0.9722     1st Qu.:-0.9624     1st Qu.:-0.9537    
-    ##  Median :-0.9660     Median :-0.9571     Median :-0.9429    
-    ##  Mean   :-0.9659     Mean   :-0.9557     Mean   :-0.9420    
-    ##  3rd Qu.:-0.9587     3rd Qu.:-0.9508     3rd Qu.:-0.9304    
-    ##  Max.   :-0.9340     Max.   :-0.9011     Max.   :-0.8807    
-    ##  tBodyAccJerk-mean()-X tBodyAccJerk-mean()-Y tBodyAccJerk-mean()-Z
-    ##  Min.   :0.05724       Min.   :-0.003104     Min.   :-0.0196720   
-    ##  1st Qu.:0.07683       1st Qu.: 0.003826     1st Qu.:-0.0073727   
-    ##  Median :0.07824       Median : 0.007196     Median :-0.0039814   
-    ##  Mean   :0.07813       Mean   : 0.007454     Mean   :-0.0044584   
-    ##  3rd Qu.:0.08188       3rd Qu.: 0.010645     3rd Qu.:-0.0007876   
-    ##  Max.   :0.08664       Max.   : 0.020047     Max.   : 0.0155338   
-    ##  tBodyAccJerk-std()-X tBodyAccJerk-std()-Y tBodyAccJerk-std()-Z
-    ##  Min.   :-0.9936      Min.   :-0.987196    Min.   :-0.9911     
-    ##  1st Qu.:-0.7001      1st Qu.:-0.678521    1st Qu.:-0.8280     
-    ##  Median :-0.6374      Median :-0.621958    Median :-0.7817     
-    ##  Mean   :-0.6555      Mean   :-0.620812    Mean   :-0.7785     
-    ##  3rd Qu.:-0.5760      3rd Qu.:-0.502877    3rd Qu.:-0.7267     
-    ##  Max.   :-0.1716      Max.   : 0.004091    Max.   :-0.3869     
-    ##  tBodyGyro-mean()-X  tBodyGyro-mean()-Y tBodyGyro-mean()-Z tBodyGyro-std()-X
-    ##  Min.   :-0.070278   Min.   :-0.10137   Min.   :0.04831    Min.   :-0.9876  
-    ##  1st Qu.:-0.041855   1st Qu.:-0.08290   1st Qu.:0.08399    1st Qu.:-0.7668  
-    ##  Median :-0.027554   Median :-0.07732   Median :0.08826    Median :-0.7201  
-    ##  Mean   :-0.031428   Mean   :-0.07503   Mean   :0.08844    Mean   :-0.7345  
-    ##  3rd Qu.:-0.020822   3rd Qu.:-0.07060   3rd Qu.:0.09601    3rd Qu.:-0.6771  
-    ##  Max.   : 0.007798   Max.   :-0.04224   Max.   :0.11626    Max.   :-0.3534  
-    ##  tBodyGyro-std()-Y tBodyGyro-std()-Z tBodyGyroJerk-mean()-X
-    ##  Min.   :-0.9858   Min.   :-0.9857   Min.   :-0.11443      
-    ##  1st Qu.:-0.7674   1st Qu.:-0.7239   1st Qu.:-0.10388      
-    ##  Median :-0.7273   Median :-0.6883   Median :-0.09765      
-    ##  Mean   :-0.7028   Mean   :-0.6713   Mean   :-0.09631      
-    ##  3rd Qu.:-0.6436   3rd Qu.:-0.5968   3rd Qu.:-0.09137      
-    ##  Max.   :-0.2167   Max.   :-0.1694   Max.   :-0.05891      
-    ##  tBodyGyroJerk-mean()-Y tBodyGyroJerk-mean()-Z tBodyGyroJerk-std()-X
-    ##  Min.   :-0.05007       Min.   :-0.06442       Min.   :-0.9927      
-    ##  1st Qu.:-0.04396       1st Qu.:-0.05715       1st Qu.:-0.7790      
-    ##  Median :-0.04146       Median :-0.05514       Median :-0.7350      
-    ##  Mean   :-0.04217       Mean   :-0.05468       Mean   :-0.7382      
-    ##  3rd Qu.:-0.04002       3rd Qu.:-0.05273       3rd Qu.:-0.6742      
-    ##  Max.   :-0.03722       Max.   :-0.04186       Max.   :-0.0342      
-    ##  tBodyGyroJerk-std()-Y tBodyGyroJerk-std()-Z tBodyAccMag-mean()
-    ##  Min.   :-0.9934       Min.   :-0.99354      Min.   :-0.98028  
-    ##  1st Qu.:-0.8708       1st Qu.:-0.79592      1st Qu.:-0.61689  
-    ##  Median :-0.8084       Median :-0.75702      Median :-0.54135  
-    ##  Mean   :-0.7975       Mean   :-0.74395      Mean   :-0.57317  
-    ##  3rd Qu.:-0.7242       3rd Qu.:-0.69365      3rd Qu.:-0.50024  
-    ##  Max.   :-0.3000       Max.   :-0.05099      Max.   :-0.05541  
-    ##  tBodyAccMag-std() tGravityAccMag-mean() tGravityAccMag-std()
-    ##  Min.   :-0.9747   Min.   :-0.98028      Min.   :-0.9747     
-    ##  1st Qu.:-0.6593   1st Qu.:-0.61689      1st Qu.:-0.6593     
-    ##  Median :-0.5984   Median :-0.54135      Median :-0.5984     
-    ##  Mean   :-0.6125   Mean   :-0.57317      Mean   :-0.6125     
-    ##  3rd Qu.:-0.5450   3rd Qu.:-0.50024      3rd Qu.:-0.5450     
-    ##  Max.   :-0.1046   Max.   :-0.05541      Max.   :-0.1046     
-    ##  tBodyAccJerkMag-mean() tBodyAccJerkMag-std() tBodyGyroMag-mean()
-    ##  Min.   :-0.9924        Min.   :-0.9915       Min.   :-0.9795    
-    ##  1st Qu.:-0.7060        1st Qu.:-0.6881       1st Qu.:-0.6935    
-    ##  Median :-0.6590        Median :-0.6260       Median :-0.6202    
-    ##  Mean   :-0.6654        Mean   :-0.6435       Mean   :-0.6272    
-    ##  3rd Qu.:-0.5839        3rd Qu.:-0.5567       3rd Qu.:-0.5499    
-    ##  Max.   :-0.1539        Max.   :-0.0879       Max.   :-0.1756    
-    ##  tBodyGyroMag-std() tBodyGyroJerkMag-mean() tBodyGyroJerkMag-std()
-    ##  Min.   :-0.9805    Min.   :-0.9946         Min.   :-0.9937       
-    ##  1st Qu.:-0.7445    1st Qu.:-0.8298         1st Qu.:-0.8637       
-    ##  Median :-0.6780    Median :-0.7834         Median :-0.8013       
-    ##  Mean   :-0.6788    Mean   :-0.7716         Mean   :-0.7867       
-    ##  3rd Qu.:-0.6072    3rd Qu.:-0.7131         3rd Qu.:-0.7232       
-    ##  Max.   :-0.2012    Max.   :-0.2027         Max.   :-0.2368       
-    ##  fBodyAcc-mean()-X fBodyAcc-mean()-Y fBodyAcc-mean()-Z fBodyAcc-std()-X 
-    ##  Min.   :-0.9922   Min.   :-0.9752   Min.   :-0.9827   Min.   :-0.9925  
-    ##  1st Qu.:-0.6905   1st Qu.:-0.6106   1st Qu.:-0.7442   1st Qu.:-0.6578  
-    ##  Median :-0.6226   Median :-0.5562   Median :-0.6884   Median :-0.6154  
-    ##  Mean   :-0.6417   Mean   :-0.5559   Mean   :-0.6907   Mean   :-0.6242  
-    ##  3rd Qu.:-0.5779   3rd Qu.:-0.4383   3rd Qu.:-0.6300   3rd Qu.:-0.5478  
-    ##  Max.   :-0.1338   Max.   : 0.1020   Max.   :-0.2726   Max.   :-0.1272  
-    ##  fBodyAcc-std()-Y   fBodyAcc-std()-Z   fBodyAcc-meanFreq()-X
-    ##  Min.   :-0.97169   Min.   :-0.97406   Min.   :-0.348854    
-    ##  1st Qu.:-0.60560   1st Qu.:-0.71320   1st Qu.:-0.242945    
-    ##  Median :-0.54290   Median :-0.65149   Median :-0.218266    
-    ##  Mean   :-0.54918   Mean   :-0.65062   Mean   :-0.204185    
-    ##  3rd Qu.:-0.45817   3rd Qu.:-0.59200   3rd Qu.:-0.180500    
-    ##  Max.   : 0.05923   Max.   :-0.05984   Max.   : 0.007987    
-    ##  fBodyAcc-meanFreq()-Y fBodyAcc-meanFreq()-Z fBodyAccJerk-mean()-X
-    ##  Min.   :-0.16456      Min.   :-0.140595     Min.   :-0.9937      
-    ##  1st Qu.:-0.02825      1st Qu.: 0.005818     1st Qu.:-0.7168      
-    ##  Median : 0.03748      Median : 0.051708     Median :-0.6600      
-    ##  Mean   : 0.02171      Mean   : 0.055647     Mean   :-0.6719      
-    ##  3rd Qu.: 0.07151      3rd Qu.: 0.090987     3rd Qu.:-0.6019      
-    ##  Max.   : 0.13642      Max.   : 0.284313     Max.   :-0.2090      
-    ##  fBodyAccJerk-mean()-Y fBodyAccJerk-mean()-Z fBodyAccJerk-std()-X
-    ##  Min.   :-0.98687      Min.   :-0.9894       Min.   :-0.9942     
-    ##  1st Qu.:-0.69749      1st Qu.:-0.8090       1st Qu.:-0.7101     
-    ##  Median :-0.64149      Median :-0.7679       Median :-0.6547     
-    ##  Mean   :-0.64145      Mean   :-0.7605       Mean   :-0.6697     
-    ##  3rd Qu.:-0.54047      3rd Qu.:-0.7089       3rd Qu.:-0.5862     
-    ##  Max.   :-0.08715      Max.   :-0.3530       Max.   :-0.2071     
-    ##  fBodyAccJerk-std()-Y fBodyAccJerk-std()-Z fBodyAccJerk-meanFreq()-X
-    ##  Min.   :-0.98858     Min.   :-0.9913      Min.   :-0.27090         
-    ##  1st Qu.:-0.67943     1st Qu.:-0.8460      1st Qu.:-0.09216         
-    ##  Median :-0.62243     Median :-0.7969      Median :-0.04095         
-    ##  Mean   :-0.62457     Mean   :-0.7954      Mean   :-0.03006         
-    ##  3rd Qu.:-0.50474     3rd Qu.:-0.7434      3rd Qu.: 0.01699         
-    ##  Max.   : 0.03547     Max.   :-0.4196      Max.   : 0.25766         
-    ##  fBodyAccJerk-meanFreq()-Y fBodyAccJerk-meanFreq()-Z fBodyGyro-mean()-X
-    ##  Min.   :-0.40027          Min.   :-0.30464          Min.   :-0.98612  
-    ##  1st Qu.:-0.24934          1st Qu.:-0.16540          1st Qu.:-0.71258  
-    ##  Median :-0.19827          Median :-0.10515          Median :-0.67328  
-    ##  Mean   :-0.20126          Mean   :-0.10416          Mean   :-0.68399  
-    ##  3rd Qu.:-0.16451          3rd Qu.:-0.07174          3rd Qu.:-0.62998  
-    ##  Max.   : 0.08838          Max.   : 0.13623          Max.   :-0.07883  
-    ##  fBodyGyro-mean()-Y fBodyGyro-mean()-Z fBodyGyro-std()-X fBodyGyro-std()-Y
-    ##  Min.   :-0.9874    Min.   :-0.98643   Min.   :-0.9881   Min.   :-0.9849  
-    ##  1st Qu.:-0.8000    1st Qu.:-0.71157   1st Qu.:-0.7865   1st Qu.:-0.7738  
-    ##  Median :-0.7463    Median :-0.66724   Median :-0.7367   Median :-0.7254  
-    ##  Mean   :-0.7239    Mean   :-0.65796   Mean   :-0.7521   Mean   :-0.6953  
-    ##  3rd Qu.:-0.6419    3rd Qu.:-0.60237   3rd Qu.:-0.6906   3rd Qu.:-0.6493  
-    ##  Max.   :-0.2488    Max.   :-0.08198   Max.   :-0.4454   Max.   :-0.1509  
-    ##  fBodyGyro-std()-Z fBodyGyro-meanFreq()-X fBodyGyro-meanFreq()-Y
-    ##  Min.   :-0.9867   Min.   :-0.30704       Min.   :-0.40331      
-    ##  1st Qu.:-0.7528   1st Qu.:-0.14378       1st Qu.:-0.23774      
-    ##  Median :-0.7186   Median :-0.10234       Median :-0.15943      
-    ##  Mean   :-0.7079   Mean   :-0.10091       Mean   :-0.17280      
-    ##  3rd Qu.:-0.6389   3rd Qu.:-0.03931       3rd Qu.:-0.09613      
-    ##  Max.   :-0.2257   Max.   : 0.12250       Max.   : 0.08460      
-    ##  fBodyGyro-meanFreq()-Z fBodyAccMag-mean() fBodyAccMag-std()
-    ##  Min.   :-0.266167      Min.   :-0.98140   Min.   :-0.9748  
-    ##  1st Qu.:-0.077612      1st Qu.:-0.65817   1st Qu.:-0.7076  
-    ##  Median :-0.044087      Median :-0.59292   Median :-0.6687  
-    ##  Mean   :-0.042621      Mean   :-0.60635   Mean   :-0.6779  
-    ##  3rd Qu.:-0.003054      3rd Qu.:-0.51739   3rd Qu.:-0.6191  
-    ##  Max.   : 0.265781      Max.   :-0.05628   Max.   :-0.2742  
-    ##  fBodyAccMag-meanFreq() fBodyBodyAccJerkMag-mean() fBodyBodyAccJerkMag-std()
-    ##  Min.   :-0.06820       Min.   :-0.99120           Min.   :-0.9907          
-    ##  1st Qu.: 0.03812       1st Qu.:-0.68402           1st Qu.:-0.6894          
-    ##  Median : 0.08495       Median :-0.61798           Median :-0.6390          
-    ##  Mean   : 0.08425       Mean   :-0.63689           Mean   :-0.6551          
-    ##  3rd Qu.: 0.13997       3rd Qu.:-0.54154           3rd Qu.:-0.5821          
-    ##  Max.   : 0.25776       Max.   :-0.07597           Max.   :-0.1103          
-    ##  fBodyBodyAccJerkMag-meanFreq() fBodyBodyGyroMag-mean() fBodyBodyGyroMag-std()
-    ##  Min.   :-0.02354               Min.   :-0.9859         Min.   :-0.9803       
-    ##  1st Qu.: 0.12167               1st Qu.:-0.7720         1st Qu.:-0.7709       
-    ##  Median : 0.17704               Median :-0.7272         Median :-0.7076       
-    ##  Mean   : 0.18153               Mean   :-0.7103         Mean   :-0.7156       
-    ##  3rd Qu.: 0.21617               3rd Qu.:-0.6498         3rd Qu.:-0.6595       
-    ##  Max.   : 0.40347               Max.   :-0.1562         Max.   :-0.3770       
-    ##  fBodyBodyGyroMag-meanFreq() fBodyBodyGyroJerkMag-mean()
-    ##  Min.   :-0.31465            Min.   :-0.9937            
-    ##  1st Qu.:-0.11207            1st Qu.:-0.8650            
-    ##  Median :-0.03994            Median :-0.8035            
-    ##  Mean   :-0.04543            Mean   :-0.7886            
-    ##  3rd Qu.: 0.01493            3rd Qu.:-0.7194            
-    ##  Max.   : 0.28622            Max.   :-0.2526            
-    ##  fBodyBodyGyroJerkMag-std() fBodyBodyGyroJerkMag-meanFreq()
-    ##  Min.   :-0.9939            Min.   :-0.00802               
-    ##  1st Qu.:-0.8722            1st Qu.: 0.06580               
-    ##  Median :-0.8101            Median : 0.12932               
-    ##  Mean   :-0.8001            Mean   : 0.13092               
-    ##  3rd Qu.:-0.7426            3rd Qu.: 0.18183               
-    ##  Max.   :-0.2708            Max.   : 0.33225
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">tidy_data_average</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">81</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">79</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+
+Data summary
+
+**Variable type: character**
+
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 13%" />
+<col style="width: 18%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 8%" />
+<col style="width: 12%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">subject</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">activity_labels</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+
+**Variable type: numeric**
+
+<table style="width:100%;">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 9%" />
+<col style="width: 13%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">tBodyAcc-mean()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: left;">▂▅▃▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyAcc-mean()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">-0.01</td>
+<td style="text-align: left;">▂▇▇▃▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyAcc-mean()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">-0.12</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: left;">▁▂▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyAcc-std()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.63</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.55</td>
+<td style="text-align: right;">-0.13</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyAcc-std()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.53</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.59</td>
+<td style="text-align: right;">-0.53</td>
+<td style="text-align: right;">-0.42</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: left;">▂▆▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyAcc-std()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.65</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.65</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: left;">▂▇▆▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tGravityAcc-mean()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: left;">▁▆▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tGravityAcc-mean()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">-0.18</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: left;">▃▆▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tGravityAcc-mean()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">-0.28</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: left;">▁▁▂▇▅</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tGravityAcc-std()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">-1.00</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.96</td>
+<td style="text-align: right;">-0.93</td>
+<td style="text-align: left;">▂▅▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tGravityAcc-std()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.96</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.96</td>
+<td style="text-align: right;">-0.96</td>
+<td style="text-align: right;">-0.95</td>
+<td style="text-align: right;">-0.90</td>
+<td style="text-align: left;">▂▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tGravityAcc-std()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.94</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.95</td>
+<td style="text-align: right;">-0.94</td>
+<td style="text-align: right;">-0.93</td>
+<td style="text-align: right;">-0.88</td>
+<td style="text-align: left;">▅▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyAccJerk-mean()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: left;">▁▁▂▇▅</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyAccJerk-mean()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: left;">▃▇▇▃▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyAccJerk-mean()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: left;">▁▅▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyAccJerk-std()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.70</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">-0.17</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyAccJerk-std()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.50</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: left;">▂▇▅▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyAccJerk-std()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.78</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.83</td>
+<td style="text-align: right;">-0.78</td>
+<td style="text-align: right;">-0.73</td>
+<td style="text-align: right;">-0.39</td>
+<td style="text-align: left;">▂▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyGyro-mean()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: left;">▅▁▇▆▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyGyro-mean()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: left;">▂▇▇▂▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyGyro-mean()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: left;">▁▂▇▇▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyGyro-std()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.73</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.77</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">-0.35</td>
+<td style="text-align: left;">▂▆▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyGyro-std()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.70</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.77</td>
+<td style="text-align: right;">-0.73</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">-0.22</td>
+<td style="text-align: left;">▂▇▃▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyGyro-std()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">-0.17</td>
+<td style="text-align: left;">▂▇▆▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyGyroJerk-mean()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">-0.09</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: left;">▅▇▃▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyGyroJerk-mean()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: left;">▂▂▆▇▆</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyGyroJerk-mean()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: left;">▃▇▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyGyroJerk-std()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.78</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: left;">▂▇▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyGyroJerk-std()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.80</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.87</td>
+<td style="text-align: right;">-0.81</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">-0.30</td>
+<td style="text-align: left;">▅▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyGyroJerk-std()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.80</td>
+<td style="text-align: right;">-0.76</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: left;">▃▇▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyAccMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.57</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.54</td>
+<td style="text-align: right;">-0.50</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: left;">▂▂▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyAccMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.61</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">-0.55</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tGravityAccMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.57</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.54</td>
+<td style="text-align: right;">-0.50</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: left;">▂▂▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tGravityAccMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.61</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">-0.55</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyAccJerkMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">-0.15</td>
+<td style="text-align: left;">▂▇▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyAccJerkMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">-0.63</td>
+<td style="text-align: right;">-0.56</td>
+<td style="text-align: right;">-0.09</td>
+<td style="text-align: left;">▂▆▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyGyroMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.63</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.55</td>
+<td style="text-align: right;">-0.18</td>
+<td style="text-align: left;">▂▃▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyGyroMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">-0.61</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: left;">▂▇▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tBodyGyroJerkMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.77</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.83</td>
+<td style="text-align: right;">-0.78</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: left;">▃▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tBodyGyroJerkMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.79</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.86</td>
+<td style="text-align: right;">-0.80</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">-0.24</td>
+<td style="text-align: left;">▃▇▂▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAcc-mean()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">-0.13</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAcc-mean()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.56</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.61</td>
+<td style="text-align: right;">-0.56</td>
+<td style="text-align: right;">-0.44</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: left;">▂▇▆▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAcc-mean()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">-0.63</td>
+<td style="text-align: right;">-0.27</td>
+<td style="text-align: left;">▂▇▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAcc-std()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.55</td>
+<td style="text-align: right;">-0.13</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAcc-std()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.55</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.61</td>
+<td style="text-align: right;">-0.54</td>
+<td style="text-align: right;">-0.46</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: left;">▂▆▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAcc-std()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.65</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.65</td>
+<td style="text-align: right;">-0.59</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: left;">▂▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAcc-meanFreq()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">-0.35</td>
+<td style="text-align: right;">-0.24</td>
+<td style="text-align: right;">-0.22</td>
+<td style="text-align: right;">-0.18</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: left;">▂▇▃▁▂</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAcc-meanFreq()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">-0.16</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: left;">▂▂▃▇▅</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAcc-meanFreq()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">-0.14</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: left;">▂▆▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAccJerk-mean()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">-0.21</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAccJerk-mean()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.70</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">-0.54</td>
+<td style="text-align: right;">-0.09</td>
+<td style="text-align: left;">▂▇▆▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAccJerk-mean()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.76</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.81</td>
+<td style="text-align: right;">-0.77</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.35</td>
+<td style="text-align: left;">▂▇▆▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAccJerk-std()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.65</td>
+<td style="text-align: right;">-0.59</td>
+<td style="text-align: right;">-0.21</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAccJerk-std()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.50</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: left;">▂▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAccJerk-std()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.80</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.85</td>
+<td style="text-align: right;">-0.80</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">-0.42</td>
+<td style="text-align: left;">▂▇▅▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAccJerk-meanFreq()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.03</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">-0.27</td>
+<td style="text-align: right;">-0.09</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: left;">▁▅▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAccJerk-meanFreq()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">-0.40</td>
+<td style="text-align: right;">-0.25</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: right;">-0.16</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: left;">▂▆▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAccJerk-meanFreq()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">-0.30</td>
+<td style="text-align: right;">-0.17</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: left;">▂▅▇▃▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyGyro-mean()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">-0.63</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: left;">▂▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyGyro-mean()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.80</td>
+<td style="text-align: right;">-0.75</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">-0.25</td>
+<td style="text-align: left;">▃▇▃▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyGyro-mean()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: left;">▂▇▅▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyGyro-std()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.75</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.79</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">-0.45</td>
+<td style="text-align: left;">▂▃▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyGyro-std()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.70</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.77</td>
+<td style="text-align: right;">-0.73</td>
+<td style="text-align: right;">-0.65</td>
+<td style="text-align: right;">-0.15</td>
+<td style="text-align: left;">▂▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyGyro-std()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.75</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">-0.23</td>
+<td style="text-align: left;">▂▇▅▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyGyro-meanFreq()-X</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">-0.31</td>
+<td style="text-align: right;">-0.14</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: left;">▂▅▇▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyGyro-meanFreq()-Y</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.17</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">-0.40</td>
+<td style="text-align: right;">-0.24</td>
+<td style="text-align: right;">-0.16</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: left;">▃▃▆▇▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyGyro-meanFreq()-Z</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">-0.27</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: left;">▂▅▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAccMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.61</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">-0.59</td>
+<td style="text-align: right;">-0.52</td>
+<td style="text-align: right;">-0.06</td>
+<td style="text-align: left;">▂▅▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyAccMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">-0.97</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.67</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.27</td>
+<td style="text-align: left;">▂▂▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyAccMag-meanFreq()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: left;">▃▃▇▅▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyBodyAccJerkMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.54</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: left;">▂▆▇▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyBodyAccJerkMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: left;">▂▇▇▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyBodyAccJerkMag-meanFreq()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: left;">▁▅▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyBodyGyroMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.77</td>
+<td style="text-align: right;">-0.73</td>
+<td style="text-align: right;">-0.65</td>
+<td style="text-align: right;">-0.16</td>
+<td style="text-align: left;">▂▇▃▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyBodyGyroMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">-0.98</td>
+<td style="text-align: right;">-0.77</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.66</td>
+<td style="text-align: right;">-0.38</td>
+<td style="text-align: left;">▂▅▇▂▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyBodyGyroMag-meanFreq()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">-0.31</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: left;">▁▆▇▂▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyBodyGyroJerkMag-mean()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.79</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.86</td>
+<td style="text-align: right;">-0.80</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">-0.25</td>
+<td style="text-align: left;">▃▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fBodyBodyGyroJerkMag-std()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.80</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">-0.99</td>
+<td style="text-align: right;">-0.87</td>
+<td style="text-align: right;">-0.81</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">-0.27</td>
+<td style="text-align: left;">▅▇▂▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fBodyBodyGyroJerkMag-meanFreq()</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">-0.01</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: left;">▅▇▇▅▁</td>
+</tr>
+</tbody>
+</table>
